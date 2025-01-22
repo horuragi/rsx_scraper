@@ -12,13 +12,10 @@ tasks = [
 
 
 def to_snake_case(camel_case):
-    if camel_case.lower().endswith("uom"):
-        return re.sub(r'(?<!^)(?=[A-Z])', '_', camel_case[:-3]).lower() + "_uom"
-
-    if camel_case.lower().endswith("id"):
-        return re.sub(r'(?<!^)(?=[A-Z])', '_', camel_case[:-2]).lower() + "_id"
-
-    return re.sub(r'(?<!^)(?=[A-Z])', '_', camel_case).lower()
+    camel_case = re.sub(r'([a-z])([A-Z])', r'\1_\2', camel_case)
+    camel_case = re.sub(r'([A-Z]+)([A-Z][a-z])', r'\1_\2', camel_case)
+    camel_case = re.sub(r'([0-9])([a-zA-Z])', r'\1_\2', camel_case)
+    return camel_case.lower()
 
 
 def generate_go_struct(parsed_data, struct_name="GeneratedStruct"):
